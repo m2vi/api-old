@@ -1,6 +1,6 @@
 {
   "name": "lookup",
-  "description": "",
+  "description": "A crappy designed website that uses APIs to search for usernames.",
   "version": "0.1.0",
   "homepage": "",
   "private": true,

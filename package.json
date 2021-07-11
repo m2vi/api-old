@@ -35,6 +35,7 @@
     "ip": "^1.1.5",
     "moment": "^2.29.1",
     "node-fetch": "^2.6.1",
+    "pornhub.js": "^0.2.4",
     "user-instagram": "^2.1.9",
     "validator": "^13.6.0",
     "yt-channel-info": "^2.2.0"

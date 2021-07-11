@@ -7,7 +7,7 @@ import { getDataz } from './services';
 dotenv.config();
 
 const app = express();
-const port = process.env.SERVER_PORT;
+const port = 8080;
 
 app.get('/api', async (_: Request, res: Response) => {
   try {

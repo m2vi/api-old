@@ -7,11 +7,25 @@ import { getDataz } from './services';
 dotenv.config();
 
 const app = express();
-const port = 8080;
+const port = process.env.SERVER_PORT || 3000;
 
-app.get('/api', async (_: Request, res: Response) => {
+app.get('/', async (_: Request, res: Response) => {
   try {
     const { service, u, options } = _.query;
+
+    if (!u) {
+      return res.status(400).json({
+        success: false,
+        message: 'Bad Request',
+        error: 'User Missing',
+      });
+    } else if (!service) {
+      return res.status(400).json({
+        success: false,
+        message: 'Bad Request',
+        error: 'Service Missing',
+      });
+    }
 
     const dataz = await getDataz({
       service: service.toString(),
@@ -28,6 +42,5 @@ app.get('/api', async (_: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  // tslint:disable-next-line:no-console
   console.log(`Server started at http://localhost:${port}`);
 });

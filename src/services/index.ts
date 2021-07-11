@@ -2,8 +2,10 @@ import { Discord } from './discord';
 import { GitHub } from './github';
 import { Instagram } from './instagram';
 import { Ip } from './ip';
+import { PornHub } from './pornhub';
 import { Reddit } from './reddit';
 import { ScoreSaber } from './scoresaber';
+import { Spotify } from './spotify';
 import { Steam } from './steam';
 import { YouTube } from './youtube';
 
@@ -33,12 +35,20 @@ export const services = [
     c: Ip,
   },
   {
+    name: PornHub.name,
+    c: PornHub,
+  },
+  {
     name: Reddit.name,
     c: Reddit,
   },
   {
     name: ScoreSaber.name,
     c: ScoreSaber,
+  },
+  {
+    name: Spotify.name,
+    c: Spotify,
   },
   {
     name: Steam.name,
@@ -60,6 +70,8 @@ export const getDataz = async ({ service, u, options }: GetDatazProps) => {
   for (const curr of services) {
     if (curr.name.toLowerCase() !== service.toLowerCase()) continue;
 
-    return await new curr.c(u, options).lookup();
+    const dataz = await new curr.c(u, options).lookup();
+
+    return dataz;
   }
 };

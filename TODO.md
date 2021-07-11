@@ -1,4 +1,4 @@
-- [ ] Add Settings for [GitHub, Instagram, Ip, Reddit, ScoreSaber, Steam, YouTube]
-- [ ] Extend [Instagram, GitHub, ScoreSaber]
-- [ ] Clean [Steam, Reddit]
-- [ ] Add [Twitch, Spotify, Twitter, Mojang, Hypixel, PornHub]
+- [ ] Add Settings for [GitHub, Instagram, Ip, Reddit, ScoreSaber, Steam, YouTube, PornHub]
+- [ ] Extend [Instagram, GitHub, ScoreSaber, PornHub]
+- [ ] Clean [Steam, Reddit, PornHub]
+- [ ] Add [Twitch, Spotify, Twitter, Mojang, Hypixel]

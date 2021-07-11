@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 const port = process.env.SERVER_PORT;
 
-app.get('/', async (_: Request, res: Response) => {
+app.get('/api', async (_: Request, res: Response) => {
   try {
     const { service, u, options } = _.query;
 

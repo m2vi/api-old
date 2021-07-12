@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import isJSON from '@stdlib/assert-is-json';
-import rateLimit from 'express-rate-limit';
 import { docs } from './utils/constants';
 import { e } from './utils/error';
 import { getResponse } from './services';
@@ -10,14 +9,6 @@ dotenv.config();
 
 const app = express();
 const port = process.env.SERVER_PORT || 3000;
-
-const limiter = rateLimit({
-  windowMs: 1000 * 60 * 60, // 1h
-  max: 600,
-  message: 'Too many requests from this IP, please try again later',
-});
-
-app.use(limiter);
 
 app.get('/', async (_: Request, res: Response) => {
   try {

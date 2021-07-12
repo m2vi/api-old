@@ -29,8 +29,40 @@ export interface ScoreStats {
 }
 
 export interface Player {
+  success: boolean;
   playerInfo: PlayerInfo;
   scoreStats: ScoreStats;
+  scores: Score[];
+  error:
+    | {
+        message: string;
+      }
+    | string;
+}
+
+export interface Score {
+  scoreId: number;
+  leaderboardId: number;
+  score: number;
+  uScore: number;
+  mods: string;
+  playerId: string;
+  timeset: string;
+  pp: number;
+  weight: number;
+  id: string;
+  name: string;
+  songSubName: string;
+  songAuthorName: string;
+  levelAuthorName: string;
+  diff: string;
+  maxScoreEx: number;
+  rank: number;
+}
+
+export enum ScoreOrder {
+  TOP,
+  RECENT,
 }
 
 export class ScoreSaber {
@@ -40,6 +72,13 @@ export class ScoreSaber {
   }
 
   async reformat(json: Player): Promise<Player> {
+    if (json.error) {
+      json.success = false;
+      json.error = (json.error as any).message;
+      return json;
+    }
+
+    json.success = true;
     json.playerInfo.avatar =
       'https://new.scoresaber.com' + json.playerInfo.avatar;
 
@@ -47,9 +86,10 @@ export class ScoreSaber {
   }
 
   async lookup(): Promise<Player> {
-    // Haha looks cool
-    return await this.reformat(
-      await (await fetch(`${this.baseUrl}/player/${this.id}/full`)).json()
-    );
+    const res = await (
+      await fetch(`${this.baseUrl}/player/${this.id}/full`)
+    ).json();
+
+    return this.reformat(res);
   }
 }

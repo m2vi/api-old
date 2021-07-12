@@ -2,7 +2,7 @@ import { Discord } from './discord';
 import { GitHub } from './github';
 import { Instagram } from './instagram';
 import { Ip } from './ip';
-import { PornHub } from './pornhub';
+import { Mojang } from './mojang';
 import { Reddit } from './reddit';
 import { ScoreSaber } from './scoresaber';
 import { Spotify } from './spotify';
@@ -35,8 +35,8 @@ export const services = [
     c: Ip,
   },
   {
-    name: PornHub.name,
-    c: PornHub,
+    name: Mojang.name,
+    c: Mojang,
   },
   {
     name: Reddit.name,

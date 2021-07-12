@@ -1,4 +1,7 @@
+import { response } from 'express';
 import fetch from 'node-fetch';
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 interface UrlParams {
   name: string;
@@ -22,13 +25,35 @@ export class Steam {
       }
     }
 
-    return await (await fetch(url.toString())).json();
+    try {
+      return await (await fetch(url.toString())).json();
+    } catch (error) {
+      return {
+        error: 'Profile is not public',
+        success: false,
+      };
+    }
   }
 
   async getPlayerSummaries(id?: string) {
-    return await this.fetcher('/ISteamUser/GetPlayerSummaries/v0002/', [
-      { name: 'steamids', value: id || this.u },
-    ]);
+    const summaries = await this.fetcher(
+      '/ISteamUser/GetPlayerSummaries/v0002/',
+      [{ name: 'steamids', value: id || this.u }]
+    );
+
+    const profilestates = [
+      'Offline',
+      'Online',
+      'Busy',
+      'Away',
+      'Snooze',
+      'looking to trade',
+      'looking to play',
+    ];
+
+    const communityvisibilitystates = ['Private', '', 'Public'];
+
+    return summaries;
   }
 
   async getFriendList() {
@@ -36,7 +61,13 @@ export class Steam {
       await this.fetcher('/ISteamUser/GetFriendList/v0001/', [
         { name: 'steamid', value: this.u },
       ])
-    ).friendslist.friends;
+    )?.friendslist?.friends;
+
+    if (!friendListBefore)
+      return {
+        error: 'Profile is not public',
+        success: false,
+      };
 
     return await Promise.all(
       friendListBefore.map(async (friend: any) => {
@@ -61,9 +92,9 @@ export class Steam {
 
     const reGames = await Promise.all(
       games.map(async (game: any) => {
-        const achievements = (await this.getPlayerAchievements(game.appid))
-          .playerstats;
-        const stats = (await this.getUserStatsFromGame(game.appid)).playerStats;
+        const achievements = await this.getPlayerAchievements(game.appid);
+
+        const stats = await this.getUserStatsFromGame(game.appid);
 
         game.achievements = achievements;
         game.stats = stats;
@@ -72,21 +103,20 @@ export class Steam {
       })
     );
 
-    return {
-      game_count,
-      games: reGames,
-    };
+    return [game_count, reGames];
   }
 
   async getPlayerAchievements(appid: string) {
-    return await this.fetcher('/ISteamUserStats/GetPlayerAchievements/v0001/', [
-      { name: 'steamid', value: this.u },
-      { name: 'appid', value: appid },
-    ]);
+    return (
+      await this.fetcher('/ISteamUserStats/GetPlayerAchievements/v0001/', [
+        { name: 'steamid', value: this.u },
+        { name: 'appid', value: appid },
+      ])
+    ).playerstats;
   }
 
   async getUserStatsFromGame(appid: string) {
-    return await this.fetcher('/ISteamUserStats/GetUserStatsForGame/v0002/', [
+    return await this.fetcher('/ISteamUserStats/GetUserStatsForGame/v2/', [
       { name: 'steamid', value: this.u },
       { name: 'appid', value: appid },
     ]);
@@ -99,11 +129,21 @@ export class Steam {
   }
 
   async lookup() {
-    return {
-      playerSummaries: (await this.getPlayerSummaries()).response.players[0],
-      friendList: await this.getFriendList(),
-      games: await this.getOwnedGames(),
-    };
+    const summaries = await this.getPlayerSummaries();
+
+    if (summaries.response.players.length <= 0) {
+      return {
+        success: false,
+        message: 'User does not exist',
+      };
+    } else {
+      return {
+        success: true,
+        playerSummaries: (await this.getPlayerSummaries()).response.players[0],
+        friendList: await this.getFriendList(),
+        games: await this.getOwnedGames(),
+      };
+    }
   }
 }
 

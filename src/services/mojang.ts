@@ -18,14 +18,6 @@ export class Mojang {
     return await this.fetcher(`/user/profiles/${uuid}/names`);
   }
 
-  async getSkinCape(uuid: string) {
-    return await (
-      await fetch(
-        `https://sessionserver.mojang.com/session/minecraft/profile/${uuid}`
-      )
-    ).json();
-  }
-
   async lookup() {
     const uuid = await this.getUUID();
 
@@ -33,7 +25,6 @@ export class Mojang {
       uuid,
       name: this.user,
       names: await this.getNames(uuid),
-      skinAndCape: await this.getSkinCape(uuid),
     };
   }
 }

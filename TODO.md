@@ -1,5 +1,4 @@
 - [ ] Add Settings for [GitHub, Instagram, Ip, Reddit, ScoreSaber, Steam, YouTube]
 - [ ] Extend [Instagram, GitHub, ScoreSaber]
 - [ ] Clean [Steam, Reddit]
-- [ ] Add [Spotify, Hypixel]
 - [ ] Fix [Steam]

@@ -5,9 +5,9 @@ import { Ip } from './ip';
 import { Mojang } from './mojang';
 import { Reddit } from './reddit';
 import { ScoreSaber } from './scoresaber';
-import { Spotify } from './spotify';
 import { Steam } from './steam';
 import { YouTube } from './youtube';
+import { e } from '../utils/error';
 
 export const g = (options: any, key: string, Default: any) => {
   try {
@@ -18,60 +18,40 @@ export const g = (options: any, key: string, Default: any) => {
 };
 
 export const services = [
-  {
-    name: Discord.name,
-    c: Discord,
-  },
-  {
-    name: GitHub.name,
-    c: GitHub,
-  },
-  {
-    name: Instagram.name,
-    c: Instagram,
-  },
-  {
-    name: Ip.name,
-    c: Ip,
-  },
-  {
-    name: Mojang.name,
-    c: Mojang,
-  },
-  {
-    name: Reddit.name,
-    c: Reddit,
-  },
-  {
-    name: ScoreSaber.name,
-    c: ScoreSaber,
-  },
-  {
-    name: Spotify.name,
-    c: Spotify,
-  },
-  {
-    name: Steam.name,
-    c: Steam,
-  },
-  {
-    name: YouTube.name,
-    c: YouTube,
-  },
-];
+  Discord,
+  GitHub,
+  Instagram,
+  Ip,
+  Mojang,
+  Reddit,
+  ScoreSaber,
+  Steam,
+  YouTube,
+].map((service) => ({
+  name: service.name,
+  c: service,
+}));
 
-export interface GetDatazProps {
+export interface GetResponseProps {
   service: string;
-  u: string;
+  id: string;
   options: any;
 }
 
-export const getDataz = async ({ service, u, options }: GetDatazProps) => {
+export const getResponse = async ({
+  service,
+  id,
+  options,
+}: GetResponseProps) => {
   for (const curr of services) {
     if (curr.name.toLowerCase() !== service.toLowerCase()) continue;
 
-    const dataz = await new curr.c(u, options).lookup();
+    const res = await new curr.c(id, options).lookup();
 
-    return dataz;
+    return res;
   }
+
+  return e(undefined, 400, 'The provided service does not exist.', {
+    include_docs: true,
+  });
 };

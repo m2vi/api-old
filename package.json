@@ -11,7 +11,8 @@
     "dev:start": "npm-run-all build start",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "npm run build && vercel --prod"
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,6 @@
     "@types/ip": "^1.1.0",
     "@types/match-sorter": "^6.0.0",
     "@types/moment": "^2.13.0",
-    "@types/spotify-web-api-node": "^5.0.3",
     "@types/validator": "^13.6.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -38,11 +38,10 @@
     "match-sorter": "^6.3.0",
     "moment": "^2.29.1",
     "node-fetch": "^2.6.1",
-    "pornhub.js": "^0.2.4",
     "scoresaber-api-client": "^1.0.1",
-    "spotify-web-api-node": "^5.0.2",
     "user-instagram": "^2.1.9",
     "validator": "^13.6.0",
+    "vercel": "^23.0.1",
     "yt-channel-info": "^2.2.0"
   },
   "devDependencies": {

@@ -1,13 +1,5 @@
-import { Discord } from './discord';
-import { GitHub } from './github';
-import { Instagram } from './instagram';
-import { Ip } from './ip';
-import { Mojang } from './mojang';
-import { Reddit } from './reddit';
-import { ScoreSaber } from './scoresaber';
-import { Steam } from './steam';
-import { YouTube } from './youtube';
 import { e } from '../utils/error';
+import { activeServices } from '../utils/constants';
 
 export const g = (options: any, key: string, Default: any) => {
   try {
@@ -16,21 +8,6 @@ export const g = (options: any, key: string, Default: any) => {
     return Default;
   }
 };
-
-export const services = [
-  Discord,
-  GitHub,
-  Instagram,
-  Ip,
-  Mojang,
-  Reddit,
-  ScoreSaber,
-  Steam,
-  YouTube,
-].map((service) => ({
-  name: service.name,
-  c: service,
-}));
 
 export interface GetResponseProps {
   service: string;
@@ -43,12 +20,27 @@ export const getResponse = async ({
   id,
   options,
 }: GetResponseProps) => {
-  for (const curr of services) {
-    if (curr.name.toLowerCase() !== service.toLowerCase()) continue;
+  if (!activeServices.includes(service)) {
+    return e(
+      undefined,
+      400,
+      'The provided server does not exist or is deactivated.',
+      {
+        include_docs: true,
+      }
+    );
+  }
 
-    const res = await new curr.c(id, options).lookup();
+  const { default: c } = await import(`./${service}`);
 
-    return res;
+  if (c) {
+    try {
+      const data = await new c(id, options).lookup();
+      return data;
+    } catch (err) {
+      console.error(err);
+      return e(undefined, 500, 'Something went wrong');
+    }
   }
 
   return e(undefined, 400, 'The provided service does not exist.', {

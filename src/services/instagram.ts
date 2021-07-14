@@ -8,3 +8,5 @@ export class Instagram {
     return await (userInstagram as any).getUserData(this.u);
   }
 }
+
+export default Instagram;

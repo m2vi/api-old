@@ -60,6 +60,10 @@ export interface Score {
   rank: number;
 }
 
+export interface ScoreReply {
+  scores: Score[];
+}
+
 export enum ScoreOrder {
   TOP,
   RECENT,
@@ -71,7 +75,7 @@ export class ScoreSaber {
     this.baseUrl = 'https://new.scoresaber.com/api';
   }
 
-  async reformat(json: Player): Promise<Player> {
+  private async reformat(json: Player): Promise<Player> {
     if (json.error) {
       json.success = false;
       json.error = (json.error as any).message;
@@ -93,3 +97,5 @@ export class ScoreSaber {
     return this.reformat(res);
   }
 }
+
+export default ScoreSaber;

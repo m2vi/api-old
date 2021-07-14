@@ -28,3 +28,5 @@ export class Mojang {
     };
   }
 }
+
+export default Mojang;

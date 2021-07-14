@@ -50,3 +50,5 @@ export class Ip {
     };
   }
 }
+
+export default Ip;

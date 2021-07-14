@@ -10,3 +10,5 @@ export class Reddit {
     return await req.json();
   }
 }
+
+export default Reddit;

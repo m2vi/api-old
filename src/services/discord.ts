@@ -25,7 +25,6 @@ export interface FormatedProps {
   bot?: boolean;
   id?: string;
   username?: string;
-  name?: string;
   discriminator?: string;
   flags?: number;
   creationDate?: any;
@@ -68,12 +67,10 @@ export class Discord {
 
     return {
       success,
-      message: '200: Ok',
       code: 200,
       bot: bot ? true : false,
       id,
       username,
-      name: `${username}#${discriminator}`,
       discriminator,
       creationDate: this.convertIdtoTimestamp(
         g(this.options, 'momentFormat', 'M.D.YYYY')
@@ -116,7 +113,7 @@ export class Discord {
     const unixbin = bin.substring(0, 42 - m).toString();
     const timestamp = parseInt(unixbin, 2) + 1420070400000;
     return {
-      time: timestamp.toString(),
+      time: timestamp,
       formated: moment(timestamp).format(momentFormat),
     };
   }

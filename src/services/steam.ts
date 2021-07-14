@@ -1,7 +1,4 @@
-import { response } from 'express';
 import fetch from 'node-fetch';
-// import dotenv from 'dotenv';
-// dotenv.config();
 
 interface UrlParams {
   name: string;
@@ -146,5 +143,7 @@ export class Steam {
     }
   }
 }
+
+export default Steam;
 
 // Docs: https://developer.valvesoftware.com/wiki/Steam_Web_API

@@ -59,7 +59,7 @@ app.get('/api/:service/:id', async (_: Request, res: Response) => {
     }
 
     const response = await getResponse({
-      service: service.toString(),
+      service: service.toString().toLowerCase(),
       id: id.toString(),
       options: isJSON(options) ? JSON.parse(options.toString()) : null,
     });

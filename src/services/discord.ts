@@ -1,49 +1,10 @@
-import moment from 'moment';
 import fetch from 'node-fetch';
-import { g } from '.';
-
-export interface DiscordResProps {
-  // success
-  id?: string;
-  username?: string;
-  avatar?: string;
-  discriminator?: string;
-  public_flags?: number;
-  bot?: boolean;
-
-  // fail
-  message?: string;
-  code?: number;
-  User_id?: string;
-}
-
-export interface FormatedProps {
-  success: boolean;
-  message?: string;
-  code?: number;
-  User_id?: string;
-  bot?: boolean;
-  id?: string;
-  username?: string;
-  discriminator?: string;
-  flags?: number;
-  creationDate?: any;
-  avatar?: {
-    url: string;
-    key: string;
-  };
-}
-
-export interface DiscordOptionProps {
-  avatarSize: string;
-  momementFormat: string;
-  format: boolean;
-}
+import { DiscordResProps, FormatedProps } from './types/discord';
 
 export class Discord {
-  constructor(private id: string, private options: DiscordOptionProps) {}
+  constructor(private id: string) {}
 
-  reformat(props: DiscordResProps): FormatedProps {
+  private reformat(props: DiscordResProps): FormatedProps {
     const { message, code, user_id } = props as any;
 
     const success = message && code ? false : true;
@@ -72,16 +33,10 @@ export class Discord {
       id,
       username,
       discriminator,
-      creationDate: this.convertIdtoTimestamp(
-        g(this.options, 'momentFormat', 'M.D.YYYY')
-      ),
+      creationDate: this.convertIdtoTimestamp(),
       flags: public_flags,
       avatar: {
-        url: `https://cdn.discordapp.com/avatars/${id}/${avatar}.png?size=${g(
-          this.options,
-          'avatarSize',
-          '1024'
-        )}`,
+        url: `https://cdn.discordapp.com/avatars/${id}/${avatar}.png?size=1024`,
         key: avatar,
       },
     };
@@ -102,20 +57,15 @@ export class Discord {
 
     const json: DiscordResProps = await req.json();
 
-    return g(this.options, 'format', true) === false
-      ? json
-      : this.reformat(json);
+    return this.reformat(json);
   }
 
-  convertIdtoTimestamp(momentFormat: string) {
+  private convertIdtoTimestamp() {
     const bin = (+this.id).toString(2);
     const m = 64 - bin.length;
     const unixbin = bin.substring(0, 42 - m).toString();
     const timestamp = parseInt(unixbin, 2) + 1420070400000;
-    return {
-      time: timestamp,
-      formated: moment(timestamp).format(momentFormat),
-    };
+    return timestamp;
   }
 }
 

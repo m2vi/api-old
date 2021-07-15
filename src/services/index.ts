@@ -1,5 +1,6 @@
 import { e } from '../utils/error';
 import { activeServices } from '../utils/constants';
+import { GetResponseProps } from './types/index';
 
 export const g = (options: any, key: string, Default: any) => {
   try {
@@ -8,12 +9,6 @@ export const g = (options: any, key: string, Default: any) => {
     return Default;
   }
 };
-
-export interface GetResponseProps {
-  service: string;
-  id: string;
-  options: any;
-}
 
 export const getResponse = async ({
   service,

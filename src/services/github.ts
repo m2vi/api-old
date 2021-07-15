@@ -1,10 +1,5 @@
 import fetch from 'node-fetch';
-
-interface GetAllProps {
-  query: string;
-  repos: Promise<any>;
-  details: Promise<any>;
-}
+import { GetAllProps } from './types/github';
 
 export class GitHub {
   #baseUrl: string;

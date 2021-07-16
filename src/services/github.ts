@@ -8,7 +8,7 @@ export class GitHub {
     this.#baseUrl = 'https://api.github.com';
   }
 
-  async fetcher(path: string) {
+  private async fetcher(path: string) {
     const headers = {
       Authorization: `Authorization: token ${process.env.GitHubPAT}`,
     };
@@ -19,23 +19,19 @@ export class GitHub {
     return json;
   }
 
-  getLanguages(repos: any[]): void {
-    return void 0;
-  }
-
-  async repos() {
+  public async repos() {
     return await this.fetcher(`/users/${this.user}/repos`);
   }
 
-  async repo(repository: string) {
+  public async repo(repository: string) {
     return await this.fetcher(`/repos/${this.user}/${repository}`);
   }
 
-  async details() {
+  public async details() {
     return await this.fetcher(`/users/${this.user}`);
   }
 
-  async lookup(): Promise<GetAllProps> {
+  public async lookup(): Promise<GetAllProps> {
     return {
       query: this.user,
       repos: await this.repos(),

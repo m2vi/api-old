@@ -1,3 +1,0 @@
-- [ ] Extend [Instagram, GitHub, ScoreSaber]
-- [ ] Clean [Steam, Reddit]
-- [ ] Fix [Steam]

@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 export class Reddit {
   constructor(private user: string) {}
 
-  async lookup() {
+  public async lookup() {
     const req = await fetch(
       `https://www.reddit.com/user/${this.user}/about.json`
     );

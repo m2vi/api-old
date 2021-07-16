@@ -13,7 +13,7 @@ export class Steam {
     this.key = process.env.steamKey;
   }
 
-  async fetcher(path: string, params?: UrlParams[]) {
+  private async fetcher(path: string, params?: UrlParams[]) {
     const url = new URL(`${this.baseUrl}${path}?key=${this.key}&format=json`);
 
     if (params) {
@@ -32,7 +32,7 @@ export class Steam {
     }
   }
 
-  async getPlayerSummaries(id?: string) {
+  public async getPlayerSummaries(id?: string) {
     const summaries = await this.fetcher(
       '/ISteamUser/GetPlayerSummaries/v0002/',
       [{ name: 'steamids', value: id || this.u }]
@@ -53,7 +53,7 @@ export class Steam {
     return summaries;
   }
 
-  async getFriendList() {
+  public async getFriendList() {
     const friendListBefore = (
       await this.fetcher('/ISteamUser/GetFriendList/v0001/', [
         { name: 'steamid', value: this.u },
@@ -78,7 +78,7 @@ export class Steam {
     );
   }
 
-  async getOwnedGames() {
+  public async getOwnedGames() {
     const { game_count, games } = (
       await this.fetcher('/IPlayerService/GetOwnedGames/v0001/', [
         { name: 'steamid', value: this.u },
@@ -103,7 +103,7 @@ export class Steam {
     return [game_count, reGames];
   }
 
-  async getPlayerAchievements(appid: string) {
+  public async getPlayerAchievements(appid: string) {
     return (
       await this.fetcher('/ISteamUserStats/GetPlayerAchievements/v0001/', [
         { name: 'steamid', value: this.u },
@@ -112,20 +112,20 @@ export class Steam {
     ).playerstats;
   }
 
-  async getUserStatsFromGame(appid: string) {
+  public async getUserStatsFromGame(appid: string) {
     return await this.fetcher('/ISteamUserStats/GetUserStatsForGame/v2/', [
       { name: 'steamid', value: this.u },
       { name: 'appid', value: appid },
     ]);
   }
 
-  async getRecentlyPlayedGames() {
+  public async getRecentlyPlayedGames() {
     return await this.fetcher('/IPlayerService/GetOwnedGames/v0001/', [
       { name: 'steamid', value: this.u },
     ]);
   }
 
-  async lookup() {
+  public async lookup() {
     const summaries = await this.getPlayerSummaries();
 
     if (summaries.response.players.length <= 0) {

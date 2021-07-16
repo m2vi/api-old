@@ -5,7 +5,7 @@ import { isPrivate, isV4Format, isV6Format } from 'ip';
 export class Ip {
   constructor(private ip: string) {}
 
-  async lookup() {
+  public async lookup() {
     if (!validator.isIP(this.ip)) {
       return {
         success: false,

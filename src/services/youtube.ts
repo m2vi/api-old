@@ -5,7 +5,7 @@ import { e } from '../utils/error';
 export class YouTube {
   constructor(private id: string) {}
 
-  async lookup() {
+  public async lookup() {
     try {
       return await ytch.getChannelInfo(this.id, '0');
     } catch (error) {

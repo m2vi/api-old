@@ -42,7 +42,7 @@ export class Discord {
     };
   }
 
-  async lookup() {
+  public async lookup() {
     const baseUrl = 'https://discord.com/api';
     const { discordToken } = process.env;
 

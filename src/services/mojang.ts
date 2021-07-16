@@ -6,19 +6,19 @@ export class Mojang {
     this.#baseUrl = 'https://api.mojang.com';
   }
 
-  async fetcher(path: string) {
+  private async fetcher(path: string) {
     return await (await fetch(`${this.#baseUrl}${path}`)).json();
   }
 
-  async getUUID() {
+  public async getUUID() {
     return (await this.fetcher(`/users/profiles/minecraft/${this.user}`)).id;
   }
 
-  async getNames(uuid: string) {
+  public async getNames(uuid: string) {
     return await this.fetcher(`/user/profiles/${uuid}/names`);
   }
 
-  async lookup() {
+  public async lookup() {
     const uuid = await this.getUUID();
 
     return {

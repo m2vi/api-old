@@ -66,16 +66,19 @@ export class Steam {
         success: false,
       };
 
-    return await Promise.all(
-      friendListBefore.map(async (friend: any) => {
-        const friendInfo = (await this.getPlayerSummaries(friend.steamid))
-          .response.players[0];
-        friendInfo.relationship = friend.relationship;
-        friendInfo.friend_since = friend.friend_since;
+    return friendListBefore;
 
-        return friendInfo;
-      })
-    );
+    // ! CAUSES TIMEOUT
+    // return await Promise.all(
+    //   friendListBefore.map(async (friend: any) => {
+    //     const friendInfo = (await this.getPlayerSummaries(friend.steamid))
+    //       .response.players[0];
+    //     friendInfo.relationship = friend.relationship;
+    //     friendInfo.friend_since = friend.friend_since;
+
+    //     return friendInfo;
+    //   })
+    // );
   }
 
   public async getOwnedGames() {
@@ -87,20 +90,21 @@ export class Steam {
       ])
     ).response;
 
-    const reGames = await Promise.all(
-      games.map(async (game: any) => {
-        const achievements = await this.getPlayerAchievements(game.appid);
+    // ! CAUSES TIMEOUT
+    // const reGames = await Promise.all(
+    //   games.map(async (game: any) => {
+    //     const achievements = await this.getPlayerAchievements(game.appid);
 
-        const stats = await this.getUserStatsFromGame(game.appid);
+    //     const stats = await this.getUserStatsFromGame(game.appid);
 
-        game.achievements = achievements;
-        game.stats = stats;
+    //     game.achievements = achievements;
+    //     game.stats = stats;
 
-        return game;
-      })
-    );
+    //     return game;
+    //   })
+    // );
 
-    return [game_count, reGames];
+    return [game_count, games];
   }
 
   public async getPlayerAchievements(appid: string) {

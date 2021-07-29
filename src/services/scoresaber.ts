@@ -14,21 +14,22 @@ export class ScoreSaber {
     return json;
   }
 
-  public async getAllScores(totalPlayCount: number) {
-    const pages = Math.ceil(totalPlayCount / 8);
-    const scores: Score[] = [];
+  // ! CAUSES TIMEOUT
+  // public async getAllScores(totalPlayCount: number) {
+  //   const pages = Math.ceil(totalPlayCount / 8);
+  //   const scores: Score[] = [];
 
-    for (let i = 1; i <= pages; i++) {
-      try {
-        const data = await this.fetcher(`/player/${this.id}/scores/top/${i}`);
-        scores.push(...data.scores);
-      } catch (err) {
-        return err.message;
-      }
-    }
+  //   for (let i = 1; i <= pages; i++) {
+  //     try {
+  //       const data = await this.fetcher(`/player/${this.id}/scores/top/${i}`);
+  //       scores.push(...data.scores);
+  //     } catch (err) {
+  //       return err.message;
+  //     }
+  //   }
 
-    return scores;
-  }
+  //   return scores;
+  // }
 
   private async reformat(json: Player): Promise<Player> {
     if (json.error) {
@@ -37,9 +38,10 @@ export class ScoreSaber {
       return json;
     }
 
-    const scores = await this.getAllScores(json.scoreStats.totalPlayCount);
+    // ! CAUSES TIMEOUT
+    // const scores = await this.getAllScores(json.scoreStats.totalPlayCount);
 
-    json.scores = scores;
+    // json.scores = scores;
     json.success = true;
     json.playerInfo.avatar =
       'https://new.scoresaber.com' + json.playerInfo.avatar;

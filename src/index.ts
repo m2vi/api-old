@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import isJSON from '@stdlib/assert-is-json';
-import { docs } from './utils/constants';
+import { activeServices, docs } from './utils/constants';
 import { e } from './utils/error';
 import { getResponse } from './services';
 
@@ -36,6 +36,10 @@ app.get('/api', async (_: Request, res: Response) => {
 
 app.get('/api/:service', async (_: Request, res: Response) => {
   try {
+    const { service } = _.params;
+    if (service.toString().toLowerCase() === 'list') {
+      return res.json({ success: true, services: activeServices });
+    }
     return e(res, 400, 'No id provided', { include_docs: true });
   } catch (err) {
     return e(res, undefined, err);

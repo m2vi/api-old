@@ -5,6 +5,9 @@ export interface DiscordResProps {
   avatar?: string;
   discriminator?: string;
   public_flags?: number;
+  banner?: null | any;
+  banner_color?: null | any;
+  accent_color?: null | any;
   bot?: boolean;
 
   // fail
@@ -27,5 +30,10 @@ export interface FormatedProps {
   avatar?: {
     url: string;
     key: string;
+  };
+  banner?: {
+    url?: string;
+    key?: string;
+    color?: string;
   };
 }

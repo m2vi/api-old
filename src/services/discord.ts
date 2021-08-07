@@ -24,7 +24,17 @@ export class Discord {
       };
     }
 
-    const { id, username, avatar, discriminator, public_flags, bot } = props;
+    const {
+      id,
+      username,
+      avatar,
+      discriminator,
+      public_flags,
+      bot,
+      banner,
+      banner_color,
+      accent_color,
+    } = props;
 
     return {
       success,
@@ -39,11 +49,16 @@ export class Discord {
         url: `https://cdn.discordapp.com/avatars/${id}/${avatar}.png?size=1024`,
         key: avatar,
       },
+      banner: {
+        url: `https://cdn.discordapp.com/banners/${id}/${banner}.png?size=512`,
+        key: banner,
+        color: banner_color,
+      },
     };
   }
 
   public async lookup() {
-    const baseUrl = 'https://discord.com/api';
+    const baseUrl = 'https://discord.com/api/';
     const { discordToken } = process.env;
 
     const headers = {

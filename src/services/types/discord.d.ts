@@ -28,7 +28,7 @@ export interface FormatedProps {
   flags?: number;
   creationDate?: any;
   avatar?: {
-    url: string;
+    sizes: { [size: number]: string };
     key: string;
   };
   banner?: {

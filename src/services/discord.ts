@@ -44,7 +44,7 @@ export class Discord {
     for (let size of sizes) {
       avatars[
         size
-      ] = `https://cdn.discordapp.com/banners/${id}/${banner}.png?size=${size}`;
+      ] = `https://cdn.discordapp.com/avatars/${id}/${avatar}.png?size=${size}`;
     }
 
     return {

@@ -36,17 +36,6 @@ export class Discord {
       accent_color,
     } = props;
 
-    // tslint:disable-next-line: prefer-const
-    let avatars: any = {};
-    const sizes = [128, 256, 512, 1024];
-
-    // tslint:disable-next-line: prefer-const
-    for (let size of sizes) {
-      avatars[
-        size
-      ] = `https://cdn.discordapp.com/avatars/${id}/${avatar}.png?size=${size}`;
-    }
-
     return {
       success,
       code: 200,
@@ -57,11 +46,11 @@ export class Discord {
       creationDate: this.convertIdtoTimestamp(),
       flags: public_flags,
       avatar: {
-        sizes: avatars,
         key: avatar,
+        url: `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`,
       },
       banner: {
-        url: `https://cdn.discordapp.com/banners/${id}/${banner}.png?size=512`,
+        url: `https://cdn.discordapp.com/banners/${id}/${banner}.png`,
         key: banner,
         color: banner_color,
       },

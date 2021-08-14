@@ -39,7 +39,7 @@
     "node-fetch": "^2.6.1",
     "user-instagram": "^2.1.9",
     "validator": "^13.6.0",
-    "vercel": "^23.0.1",
+    "vercel": "^23.1.2",
     "yt-channel-info": "^2.2.0"
   },
   "devDependencies": {

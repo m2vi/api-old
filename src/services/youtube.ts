@@ -9,7 +9,7 @@ export class YouTube {
     try {
       return await ytch.getChannelInfo(this.id, '0');
     } catch (error) {
-      return e(undefined, 400, error);
+      return e(undefined, 400, error.message);
     }
   }
 }

@@ -10,4 +10,5 @@ export const activeServices: string[] = [
   'scoresaber',
   'steam',
   'youtube',
+  'weather',
 ];

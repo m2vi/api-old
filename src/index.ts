@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
+import apicache from 'apicache';
 import isJSON from '@stdlib/assert-is-json';
 import { activeServices, docs } from './utils/constants';
 import { e } from './utils/error';
@@ -8,6 +9,7 @@ import { getResponse } from './services';
 dotenv.config();
 
 const app = express();
+const cache = apicache.middleware;
 const port = process.env.SERVER_PORT || 3000;
 
 app.get('/', async (_: Request, res: Response) => {
@@ -46,37 +48,41 @@ app.get('/api/:service', async (_: Request, res: Response) => {
   }
 });
 
-app.get('/api/:service/:id', async (_: Request, res: Response) => {
-  try {
-    const { options } = _.query;
-    const { service, id } = _.params;
+app.get(
+  '/api/:service/:id',
+  cache('5 minutes'),
+  async (_: Request, res: Response) => {
+    try {
+      const { options } = _.query;
+      const { service, id } = _.params;
 
-    if (options && !isJSON(options)) {
-      return e(
-        res,
-        400,
-        'The given options are not parsable. Only JSON is supported.',
-        {
-          include_docs: true,
-        }
-      );
+      if (options && !isJSON(options)) {
+        return e(
+          res,
+          400,
+          'The given options are not parsable. Only JSON is supported.',
+          {
+            include_docs: true,
+          }
+        );
+      }
+
+      const response = await getResponse({
+        service: service.toString().toLowerCase(),
+        id: id.toString(),
+        options: isJSON(options) ? JSON.parse(options.toString()) : null,
+      });
+
+      res.status(200).json(response);
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: 'Internal Server Error',
+        error: err.message,
+      });
     }
-
-    const response = await getResponse({
-      service: service.toString().toLowerCase(),
-      id: id.toString(),
-      options: isJSON(options) ? JSON.parse(options.toString()) : null,
-    });
-
-    res.status(200).json(response);
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: 'Internal Server Error',
-      error: err.message,
-    });
   }
-});
+);
 
 app.listen(port, () => {
   console.info(`Server started at http://localhost:${port}`);

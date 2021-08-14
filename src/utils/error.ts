@@ -16,7 +16,7 @@ export const e = (
       success: false,
       code,
       message,
-      docs: options.include_docs && docs,
+      docs: options?.include_docs && docs,
     };
   }
 
@@ -32,6 +32,6 @@ export const e = (
     success: false,
     code,
     message,
-    docs: options.include_docs && docs,
+    docs: options?.include_docs && docs,
   });
 };

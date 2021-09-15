@@ -1,10 +1,11 @@
-import dotenv from 'dotenv';
-import express, { Request, Response } from 'express';
-import apicache from 'apicache';
-import isJSON from '@stdlib/assert-is-json';
 import { activeServices, docs } from './utils/constants';
+import express, { Request, Response } from 'express';
+
+import apicache from 'apicache';
+import dotenv from 'dotenv';
 import { e } from './utils/error';
 import { getResponse } from './services';
+import isJSON from '@stdlib/assert-is-json';
 
 dotenv.config();
 
@@ -50,7 +51,7 @@ app.get('/api/:service', async (_: Request, res: Response) => {
 
 app.get(
   '/api/:service/:id',
-  cache('5 minutes'),
+  cache('10 minutes'),
   async (_: Request, res: Response) => {
     try {
       const { options } = _.query;

@@ -1,5 +1,6 @@
-import fetch from 'node-fetch';
 import { Player, Score } from './types/scoresaber';
+
+import fetch from 'node-fetch';
 
 export class ScoreSaber {
   baseUrl: string;
@@ -15,21 +16,21 @@ export class ScoreSaber {
   }
 
   // ! CAUSES TIMEOUT
-  // public async getAllScores(totalPlayCount: number) {
-  //   const pages = Math.ceil(totalPlayCount / 8);
-  //   const scores: Score[] = [];
+  public async getAllScores(totalPlayCount: number) {
+    const pages = Math.ceil(totalPlayCount / 8);
+    const scores: Score[] = [];
 
-  //   for (let i = 1; i <= pages; i++) {
-  //     try {
-  //       const data = await this.fetcher(`/player/${this.id}/scores/top/${i}`);
-  //       scores.push(...data.scores);
-  //     } catch (err) {
-  //       return err.message;
-  //     }
-  //   }
+    for (let i = 1; i <= pages; i++) {
+      try {
+        const data = await this.fetcher(`/player/${this.id}/scores/top/${i}`);
+        scores.push(...data.scores);
+      } catch (err) {
+        return err.message;
+      }
+    }
 
-  //   return scores;
-  // }
+    return scores;
+  }
 
   private async reformat(json: Player): Promise<Player> {
     if (json.error) {
@@ -39,12 +40,17 @@ export class ScoreSaber {
     }
 
     // ! CAUSES TIMEOUT
-    // const scores = await this.getAllScores(json.scoreStats.totalPlayCount);
+    const scores = await this.getAllScores(json.scoreStats.totalPlayCount);
 
-    // json.scores = scores;
+    json.scores = scores;
     json.success = true;
     json.playerInfo.avatar =
       'https://new.scoresaber.com' + json.playerInfo.avatar;
+    (json as any).firstPage = (
+      await fetch(
+        `https://new.scoresaber.com/api/player/${json.playerInfo.playerId}/scores/top/1`
+      )
+    ).json();
 
     return json;
   }

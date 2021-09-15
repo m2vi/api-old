@@ -52,7 +52,6 @@ export class ScoreSaber {
       await fetch(`https://new.scoresaber.com/api/player/${id}/scores/top/1`)
     ).json();
 
-    console.log(data);
     return data.scores;
   }
 

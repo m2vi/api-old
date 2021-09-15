@@ -39,20 +39,21 @@ export class ScoreSaber {
       return json;
     }
 
-    // ! CAUSES TIMEOUT
-    const scores = await this.getAllScores(json.scoreStats.totalPlayCount);
-
-    json.scores = scores;
     json.success = true;
     json.playerInfo.avatar =
       'https://new.scoresaber.com' + json.playerInfo.avatar;
-    (json as any).firstPage = (
-      await fetch(
-        `https://new.scoresaber.com/api/player/${json.playerInfo.playerId}/scores/top/1`
-      )
-    ).json();
+    json.firstPage = await this.getFirstPage(json.playerInfo.playerId);
 
     return json;
+  }
+
+  private async getFirstPage(id: string): Promise<number[]> {
+    const data = await (
+      await fetch(`https://new.scoresaber.com/api/player/${id}/scores/top/1`)
+    ).json();
+
+    console.log(data);
+    return data.scores;
   }
 
   public async lookup(): Promise<Player> {

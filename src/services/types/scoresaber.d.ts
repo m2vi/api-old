@@ -27,6 +27,7 @@ export interface ScoreStats {
 }
 
 export interface Player {
+  firstPage: number[];
   success: boolean;
   playerInfo: PlayerInfo;
   scoreStats: ScoreStats;

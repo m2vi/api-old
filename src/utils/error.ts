@@ -5,12 +5,7 @@ export interface ErrorOptionsProps {
   include_docs?: boolean;
 }
 
-export const e = (
-  res: Response,
-  code?: number,
-  message?: string,
-  options?: ErrorOptionsProps
-) => {
+export const e = (res: Response, code?: number, message?: string, options?: ErrorOptionsProps) => {
   if (!res && code) {
     return {
       success: false,

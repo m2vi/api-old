@@ -33,20 +33,9 @@ export class Steam {
   }
 
   public async getPlayerSummaries(id?: string) {
-    const summaries = await this.fetcher(
-      '/ISteamUser/GetPlayerSummaries/v0002/',
-      [{ name: 'steamids', value: id || this.u }]
-    );
+    const summaries = await this.fetcher('/ISteamUser/GetPlayerSummaries/v0002/', [{ name: 'steamids', value: id || this.u }]);
 
-    const profilestates = [
-      'Offline',
-      'Online',
-      'Busy',
-      'Away',
-      'Snooze',
-      'looking to trade',
-      'looking to play',
-    ];
+    const profilestates = ['Offline', 'Online', 'Busy', 'Away', 'Snooze', 'looking to trade', 'looking to play'];
 
     const communityvisibilitystates = ['Private', '', 'Public'];
 
@@ -54,11 +43,8 @@ export class Steam {
   }
 
   public async getFriendList() {
-    const friendListBefore = (
-      await this.fetcher('/ISteamUser/GetFriendList/v0001/', [
-        { name: 'steamid', value: this.u },
-      ])
-    )?.friendslist?.friends;
+    const friendListBefore = (await this.fetcher('/ISteamUser/GetFriendList/v0001/', [{ name: 'steamid', value: this.u }]))?.friendslist
+      ?.friends;
 
     if (!friendListBefore)
       return {
@@ -66,19 +52,18 @@ export class Steam {
         success: false,
       };
 
-    return friendListBefore;
+    // return friendListBefore;
 
     // ! CAUSES TIMEOUT
-    // return await Promise.all(
-    //   friendListBefore.map(async (friend: any) => {
-    //     const friendInfo = (await this.getPlayerSummaries(friend.steamid))
-    //       .response.players[0];
-    //     friendInfo.relationship = friend.relationship;
-    //     friendInfo.friend_since = friend.friend_since;
+    return await Promise.all(
+      friendListBefore.map(async (friend: any) => {
+        const friendInfo = (await this.getPlayerSummaries(friend.steamid)).response.players[0];
+        friendInfo.relationship = friend.relationship;
+        friendInfo.friend_since = friend.friend_since;
 
-    //     return friendInfo;
-    //   })
-    // );
+        return friendInfo;
+      })
+    );
   }
 
   public async getOwnedGames() {
@@ -91,20 +76,20 @@ export class Steam {
     ).response;
 
     // ! CAUSES TIMEOUT
-    // const reGames = await Promise.all(
-    //   games.map(async (game: any) => {
-    //     const achievements = await this.getPlayerAchievements(game.appid);
+    const reGames = await Promise.all(
+      games.map(async (game: any) => {
+        const achievements = await this.getPlayerAchievements(game.appid);
 
-    //     const stats = await this.getUserStatsFromGame(game.appid);
+        const stats = await this.getUserStatsFromGame(game.appid);
 
-    //     game.achievements = achievements;
-    //     game.stats = stats;
+        game.achievements = achievements;
+        game.stats = stats;
 
-    //     return game;
-    //   })
-    // );
+        return game;
+      })
+    );
 
-    return [game_count, games];
+    return [game_count, reGames];
   }
 
   public async getPlayerAchievements(appid: string) {
@@ -124,9 +109,7 @@ export class Steam {
   }
 
   public async getRecentlyPlayedGames() {
-    return await this.fetcher('/IPlayerService/GetOwnedGames/v0001/', [
-      { name: 'steamid', value: this.u },
-    ]);
+    return await this.fetcher('/IPlayerService/GetOwnedGames/v0001/', [{ name: 'steamid', value: this.u }]);
   }
 
   public async lookup() {

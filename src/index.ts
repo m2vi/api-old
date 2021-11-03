@@ -8,6 +8,10 @@ import { getResponse } from './services';
 import isJSON from '@stdlib/assert-is-json';
 import requestIp from 'request-ip';
 
+process.once('SIGUSR2', () => {
+  process.kill(process.pid, 'SIGUSR2');
+});
+
 dotenv.config();
 
 const app = express();

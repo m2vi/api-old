@@ -10,20 +10,11 @@ export const g = (options: any, key: string, Default: any) => {
   }
 };
 
-export const getResponse = async ({
-  service,
-  id,
-  options,
-}: GetResponseProps) => {
+export const getResponse = async ({ service, id, options }: GetResponseProps) => {
   if (!activeServices.includes(service)) {
-    return e(
-      undefined,
-      400,
-      'The provided server does not exist or is deactivated.',
-      {
-        include_docs: true,
-      }
-    );
+    return e(undefined, 400, 'The provided server does not exist or is deactivated.', {
+      include_docs: true,
+    });
   }
 
   const { default: c } = await import(`./${service}`);

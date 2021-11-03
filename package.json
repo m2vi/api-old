@@ -32,6 +32,7 @@
     "@types/match-sorter": "^6.0.0",
     "@types/validator": "^13.6.3",
     "apicache": "^1.6.2",
+    "awesome-phonenumber": "^2.64.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "ip": "^1.1.5",

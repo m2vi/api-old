@@ -11,6 +11,7 @@ export const activeServices: string[] = [
   'youtube',
   'weather',
   'phone',
+  'facts',
 ];
 export const sortByKey = (array: any[], key?: string) => {
   if (array && key) {

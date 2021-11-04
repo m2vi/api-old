@@ -1,7 +1,6 @@
 import { activeServices, docs } from './utils/constants';
 import express, { Request, Response } from 'express';
 
-import apicache from 'apicache';
 import dotenv from 'dotenv';
 import { e } from './utils/error';
 import { getResponse } from './services';
@@ -15,7 +14,6 @@ process.once('SIGUSR2', () => {
 dotenv.config();
 
 const app = express();
-const cache = apicache.middleware;
 const port = process.env.SERVER_PORT || 3000;
 
 app.use((req, res, next) => {
@@ -52,7 +50,7 @@ app.get('/:service', async (_: Request, res: Response) => {
   }
 });
 
-app.get('/:service/:id', cache('10 minutes'), async (_: Request, res: Response) => {
+app.get('/:service/:id', async (_: Request, res: Response) => {
   try {
     const { options } = _.query;
     const { service, id } = _.params;

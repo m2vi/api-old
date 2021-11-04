@@ -18,6 +18,11 @@ const app = express();
 const cache = apicache.middleware;
 const port = process.env.SERVER_PORT || 3000;
 
+app.use((req, res, next) => {
+  res.setHeader('X-Powered-By', 'asp.net');
+  next();
+});
+
 app.get('/', async (_: Request, res: Response) => {
   try {
     return res.status(200).json({

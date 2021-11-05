@@ -5,13 +5,14 @@ export const activeServices: string[] = [
   'instagram',
   'ip',
   'mojang',
+  'phone',
+  'quora',
   'reddit',
   'scoresaber',
   'steam',
-  'youtube',
+  'tiktok',
   'weather',
-  'phone',
-  'facts',
+  'youtube',
 ];
 export const sortByKey = (array: any[], key?: string) => {
   if (array && key) {

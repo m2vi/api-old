@@ -6,6 +6,7 @@ import { e } from './utils/error';
 import { getResponse } from './services';
 import isJSON from '@stdlib/assert-is-json';
 import requestIp from 'request-ip';
+import TrackerGg from './services/tracker.gg';
 
 process.once('SIGUSR2', () => {
   process.kill(process.pid, 'SIGUSR2');
@@ -66,6 +67,25 @@ app.get('/:service/:id', async (_: Request, res: Response) => {
       id: id.toString(),
       options: isJSON(options) ? JSON.parse(options.toString()) : null,
     });
+
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: err.message,
+    });
+  }
+});
+
+app.get('/:service/:game/:platform/:id', async (_: Request, res: Response) => {
+  try {
+    const { service, game, platform, id } = _.params;
+
+    if (service !== 'tracker.gg') throw Error('The provided server does not exist or is deactivated.');
+    console.log(game, platform, id);
+    const client = new TrackerGg(game, platform, id);
+    const response = await client.lookup();
 
     res.status(200).json(response);
   } catch (err) {

@@ -10,6 +10,11 @@ export class Mojang {
     return await (await fetch(`${this.#baseUrl}${path}`)).json();
   }
 
+  public isUUID() {
+    const regExp = new RegExp('[0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12}');
+    return regExp.test(this.user);
+  }
+
   public async getUUID() {
     return (await this.fetcher(`/users/profiles/minecraft/${this.user}`)).id;
   }
@@ -19,12 +24,13 @@ export class Mojang {
   }
 
   public async lookup() {
-    const uuid = await this.getUUID();
+    const uuid = this.isUUID() ? this.user : await this.getUUID();
+    const names = await this.getNames(uuid);
 
     return {
       uuid,
-      name: this.user,
-      names: await this.getNames(uuid),
+      name: names[names.length - 1]?.name,
+      names,
     };
   }
 }

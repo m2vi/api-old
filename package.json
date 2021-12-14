@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/m2vi/lookup#readme",
   "dependencies": {
-    "@stdlib/assert-is-json": "^0.0.6",
+    "@stdlib/assert-is-json": "^0.0.7",
     "@types/apicache": "^1.2.3",
     "@types/ip": "^1.1.0",
     "@types/match-sorter": "^6.0.0",
